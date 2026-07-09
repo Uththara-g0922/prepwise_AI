@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:prepwise_ai/features/splash/presentation/splash_screen.dart';
+import 'core/theme/app_theme.dart';
+
 
 void main() {
   runApp(const PrepWiseAIApp());
@@ -9,12 +12,12 @@ class PrepWiseAIApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: Center(
-          child: Text("PrepWise AI"),
-        ),
+      title: 'PrepWise AI',
+      theme: AppTheme.lightTheme,
+      home: const SplashScreen(
+        
       ),
     );
   }
