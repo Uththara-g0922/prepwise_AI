@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:prepwise_ai/features/splash/presentation/splash_screen.dart';
 import 'core/theme/app_theme.dart';
-
+// 1. Import your new login screen file here
+import 'features/login/presentation/login_screen.dart';
 
 void main() {
   runApp(const PrepWiseAIApp());
@@ -16,9 +16,8 @@ class PrepWiseAIApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'PrepWise AI',
       theme: AppTheme.lightTheme,
-      home: const SplashScreen(
-        
-      ),
+      // 2. Change this line from SplashScreen() to LoginScreen()
+      home: const LoginScreen(),
     );
   }
 }
