@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:prepwise_ai/core/theme/app_colors.dart';
 import 'package:prepwise_ai/core/theme/app_radius.dart';
+import 'package:prepwise_ai/features/onboarding/presentation/screens/onboarding_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -239,7 +240,20 @@ late final Animation<Offset> _buttonSlideAnimation;
             width: 230,
             height: 56,
             child: FilledButton.icon(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).pushReplacement(
+                  PageRouteBuilder(
+                    transitionDuration: const Duration(milliseconds: 500),
+                    pageBuilder: (_, animation, __) => const OnboardingScreen(),
+                    transitionsBuilder: (_, animation, __, child) {
+                      return FadeTransition(
+                        opacity: animation,
+                        child: child,
+                      );
+                    },
+                  ),
+                );
+              },
 
             icon: const Icon(Icons.arrow_forward_rounded),
 
