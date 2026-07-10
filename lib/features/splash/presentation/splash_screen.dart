@@ -39,7 +39,7 @@ class SplashScreen extends StatelessWidget {
             textAlign: TextAlign.center,
             ),
 
-            const SizedBox(height: 32),
+            const SizedBox(height: 40),
 
             Container(
               decoration: BoxDecoration(
@@ -68,7 +68,7 @@ class SplashScreen extends StatelessWidget {
         const SizedBox(height: 24),
 
         SizedBox(
-          width: 300,
+          width: 320,
         
         child: Text(
           "Practice smarter with AI-powered mock interviews,\nreal-time feedback, and personalized insights.",
@@ -99,6 +99,8 @@ class SplashScreen extends StatelessWidget {
             "Version 1.0",
             style: Theme.of(context).textTheme.bodySmall,
           ),
+
+          const SizedBox(height: 24),
 
 
           ],
