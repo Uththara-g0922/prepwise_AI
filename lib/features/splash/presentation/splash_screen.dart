@@ -126,7 +126,7 @@ with SingleTickerProviderStateMixin {
             child: Image.asset(
             'assets/images/robot.jpeg',
             width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
+            height:300,
             fit: BoxFit.cover,
           ),
         ),
