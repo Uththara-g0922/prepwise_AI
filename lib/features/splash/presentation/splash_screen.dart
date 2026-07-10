@@ -19,6 +19,11 @@ with SingleTickerProviderStateMixin {
   late final Animation<double> _robotFadeAnimation;
   late final Animation<double> _robotScaleAnimation;
 
+  late final Animation<double> _descriptionFadeAnimation;
+
+  late final Animation<double> _buttonFadeAnimation;
+late final Animation<Offset> _buttonSlideAnimation;
+
   @override
   void initState()
    {
@@ -86,6 +91,49 @@ with SingleTickerProviderStateMixin {
     ),
     );
 
+    _descriptionFadeAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(
+      CurvedAnimation(parent: _controller,
+     curve: const Interval(
+      0.60,
+      0.85,
+     curve: Curves.easeIn,
+     ),
+     ),
+     );
+
+     _buttonFadeAnimation = Tween<double>(
+      begin: 0,
+      end: 1,
+    ).animate(
+      CurvedAnimation(parent: _controller,
+     curve: const Interval(
+      0.75, 
+      1.0,
+     curve: Curves.easeIn,
+     ),
+     ),
+     );
+
+     _buttonSlideAnimation = Tween<Offset>(
+      begin: const Offset(0, 0.3),
+      end: Offset.zero,
+    ).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: const Interval(
+          0.75, 
+          1.0,
+     curve: Curves.easeOut,
+     ),
+     ),
+     );
+
+
+
+
     _controller.forward();
 
   }
@@ -139,61 +187,69 @@ with SingleTickerProviderStateMixin {
 
             const SizedBox(height: 40),
 
-ScaleTransition(
-  scale: _robotScaleAnimation,
-  child: FadeTransition(
-    opacity: _robotFadeAnimation,
-    child: Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(AppRadius.large),
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 18,
-            offset: Offset(0, 8),
+        ScaleTransition(
+          scale: _robotScaleAnimation,
+          child: FadeTransition(
+            opacity: _robotFadeAnimation,
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(AppRadius.large),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Colors.black12,
+                    blurRadius: 18,
+                    offset: Offset(0, 8),
+                  ),
+                ],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(AppRadius.large),
+                child: Image.asset(
+                  'assets/images/robot.jpeg',
+                  width: MediaQuery.of(context).size.width,
+                  height: 300,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
           ),
-        ],
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(AppRadius.large),
-        child: Image.asset(
-          'assets/images/robot.jpeg',
-          width: MediaQuery.of(context).size.width,
-          height: 300,
-          fit: BoxFit.cover,
         ),
-      ),
-    ),
-  ),
-),
         
         const SizedBox(height: 24),
 
-        SizedBox(
-          width: 320,
-        
-        child: Text(
+        FadeTransition(
+          opacity: _descriptionFadeAnimation,
+          child: SizedBox(
+             width: 320,
+             child: Text(
           "Practice smarter with AI-powered mock interviews,\nreal-time feedback, and personalized insights.",
         textAlign: TextAlign.center,
         style: Theme.of(context).textTheme.bodyMedium,
+             ),
         ),
         ),
 
         const Spacer(),
 
-        
-
-        SizedBox(
-          width: 230,
-          height: 56,
-          child: FilledButton.icon(
-            onPressed: () {},
+        SlideTransition(
+        position: _buttonSlideAnimation,
+        child: FadeTransition(
+          opacity: _buttonFadeAnimation,
+          child:SizedBox(
+            width: 230,
+            height: 56,
+            child: FilledButton.icon(
+              onPressed: () {},
 
             icon: const Icon(Icons.arrow_forward_rounded),
 
             label: const Text("Get Started"),
           ),
         ),
+        ),
+        ),
+
+        
 
         const SizedBox(height: 20),
 
