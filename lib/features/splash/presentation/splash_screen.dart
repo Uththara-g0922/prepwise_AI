@@ -16,6 +16,9 @@ with SingleTickerProviderStateMixin {
   late final Animation<double> _titleFadeAnimation;
   late final Animation<double> _subtitleFadeAnimation;
 
+  late final Animation<double> _robotFadeAnimation;
+  late final Animation<double> _robotScaleAnimation;
+
   @override
   void initState()
    {
@@ -53,6 +56,34 @@ with SingleTickerProviderStateMixin {
     ),
     ),
 
+    );
+
+    _robotFadeAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(
+      CurvedAnimation(
+    parent:_controller,
+    curve: const Interval(
+    0.35,
+    0.75,
+    curve: Curves.easeIn,
+    ),
+    ),
+    );
+
+    _robotScaleAnimation = Tween<double>(
+      begin: 0.9,
+      end: 1.0,
+    ).animate(
+      CurvedAnimation(
+    parent:_controller,
+    curve: const Interval(
+    0.35,
+    0.75,
+    curve: Curves.easeOutBack,
+    ),
+    ),
     );
 
     _controller.forward();
@@ -108,29 +139,33 @@ with SingleTickerProviderStateMixin {
 
             const SizedBox(height: 40),
 
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(AppRadius.large),
-                boxShadow: const [
-                  BoxShadow(
-                    color: Colors.black12,
-                    blurRadius: 18,
-                    offset: Offset(0, 8),
-
-                  ),
-                ],
-              ),
-
-            child: ClipRRect(
-            borderRadius: BorderRadius.circular(AppRadius.large),
-            child: Image.asset(
-            'assets/images/robot.jpeg',
-            width: MediaQuery.of(context).size.width,
-            height:300,
-            fit: BoxFit.cover,
+ScaleTransition(
+  scale: _robotScaleAnimation,
+  child: FadeTransition(
+    opacity: _robotFadeAnimation,
+    child: Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(AppRadius.large),
+        boxShadow: const [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 18,
+            offset: Offset(0, 8),
           ),
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(AppRadius.large),
+        child: Image.asset(
+          'assets/images/robot.jpeg',
+          width: MediaQuery.of(context).size.width,
+          height: 300,
+          fit: BoxFit.cover,
         ),
-        ),
+      ),
+    ),
+  ),
+),
         
         const SizedBox(height: 24),
 
