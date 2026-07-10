@@ -13,6 +13,7 @@ class _SplashScreenState extends State<SplashScreen>
 with SingleTickerProviderStateMixin {
 
   late AnimationController _controller;
+  late Animation<double> _titleFadeAnimation;
 
   @override
   void initState()
@@ -21,6 +22,17 @@ with SingleTickerProviderStateMixin {
 
     _controller = AnimationController (vsync:this,
     duration: const Duration(milliseconds: 1200),
+    );
+
+    _titleFadeAnimation = Tween<double>(
+    begin: 0.0,
+    end: 1.0,
+    ).animate(
+      CurvedAnimation(
+    parent:_controller,
+    curve: Curves.easeIn,
+    ),
+
     );
 
     _controller.forward();
@@ -48,7 +60,9 @@ with SingleTickerProviderStateMixin {
           children: [
             const Spacer(),
 
-            Text(
+            
+            FadeTransition(opacity: _titleFadeAnimation,
+            child:Text(
               "PrepWise AI",
               style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                 color:AppColors.primary,
@@ -56,6 +70,8 @@ with SingleTickerProviderStateMixin {
               ),
               textAlign: TextAlign.center,
             ),
+            ),
+            
 
             const SizedBox(height: 8),
 
