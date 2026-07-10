@@ -12,8 +12,9 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen>
 with SingleTickerProviderStateMixin {
 
-  late AnimationController _controller;
-  late Animation<double> _titleFadeAnimation;
+  late final AnimationController _controller;
+  late final Animation<double> _titleFadeAnimation;
+  late final Animation<double> _subtitleFadeAnimation;
 
   @override
   void initState()
@@ -30,7 +31,26 @@ with SingleTickerProviderStateMixin {
     ).animate(
       CurvedAnimation(
     parent:_controller,
+    curve: const Interval(
+    0.0,
+    0.35,
     curve: Curves.easeIn,
+    ),
+    ),
+
+    );
+
+        _subtitleFadeAnimation = Tween<double>(
+    begin: 0.0,
+    end: 1.0,
+    ).animate(
+      CurvedAnimation(
+    parent:_controller,
+    curve: const Interval(
+    0.20,
+    0.55,
+    curve: Curves.easeIn,
+    ),
     ),
 
     );
@@ -75,20 +95,23 @@ with SingleTickerProviderStateMixin {
 
             const SizedBox(height: 8),
 
-            Text(
+          FadeTransition(opacity: _subtitleFadeAnimation,
+          child:Text(
               "Your Personal AI Interview Coach",
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
               fontWeight: FontWeight.w400,
             ),
             textAlign: TextAlign.center,
             ),
+            ),
+            
 
             const SizedBox(height: 40),
 
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(AppRadius.large),
-                boxShadow: [
+                boxShadow: const [
                   BoxShadow(
                     color: Colors.black12,
                     blurRadius: 18,
@@ -102,8 +125,8 @@ with SingleTickerProviderStateMixin {
             borderRadius: BorderRadius.circular(AppRadius.large),
             child: Image.asset(
             'assets/images/robot.jpeg',
-            width: 300,
-            height: 300,
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
             fit: BoxFit.cover,
           ),
         ),
