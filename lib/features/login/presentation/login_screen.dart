@@ -40,10 +40,13 @@ class _LoginScreenState extends State<LoginScreen>
     super.dispose();
   }
 
-  InputDecoration _inputStyle(String hint, IconData icon) {
+  // AppColors සහ AppRadius වලින් Input Style එක නිර්මාණය කිරීම
+  InputDecoration _inputStyle(String hint, IconData icon, ThemeData theme) {
     return InputDecoration(
       hintText: hint,
-      hintStyle: const TextStyle(color: AppColors.textSecondary, fontSize: 14),
+      hintStyle: theme.textTheme.bodyMedium?.copyWith(
+        color: AppColors.textSecondary,
+      ),
       prefixIcon: Icon(icon, color: AppColors.textSecondary, size: 18),
       contentPadding: const EdgeInsets.symmetric(vertical: 14),
       enabledBorder: OutlineInputBorder(
@@ -62,6 +65,8 @@ class _LoginScreenState extends State<LoginScreen>
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context); // AppTextTheme එකෙන් styles ගැනීමට
+
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
@@ -105,19 +110,19 @@ class _LoginScreenState extends State<LoginScreen>
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          const Text(
+                          // LOGIN Text එකට headlineLarge හෝ headlineMedium භාවිතය (FontSize 30 ට ආසන්න නිසා)
+                          Text(
                             'LOGIN',
-                            style: TextStyle(
-                              fontSize: 30,
-                              fontWeight: FontWeight.w900,
+                            style: theme.textTheme.headlineLarge?.copyWith(
                               color: AppColors.textPrimary,
+                              fontWeight: FontWeight.w900,
                             ),
                           ),
                           const SizedBox(height: AppSpacing.sm),
-                          const Text(
+
+                          Text(
                             'Sign Up to Get Started',
-                            style: TextStyle(
-                              fontSize: 14,
+                            style: theme.textTheme.bodyMedium?.copyWith(
                               color: AppColors.textSecondary,
                               fontWeight: FontWeight.w500,
                             ),
@@ -128,13 +133,13 @@ class _LoginScreenState extends State<LoginScreen>
                           TextFormField(
                             controller: _emailController,
                             keyboardType: TextInputType.emailAddress,
-                            style: const TextStyle(
-                              fontSize: 14,
+                            style: theme.textTheme.bodyMedium?.copyWith(
                               color: AppColors.textPrimary,
                             ),
                             decoration: _inputStyle(
                               'Email Address',
                               Icons.mail_outline,
+                              theme,
                             ),
                           ),
                           const SizedBox(height: AppSpacing.md),
@@ -143,13 +148,13 @@ class _LoginScreenState extends State<LoginScreen>
                           TextFormField(
                             controller: _passwordController,
                             obscureText: true,
-                            style: const TextStyle(
-                              fontSize: 14,
+                            style: theme.textTheme.bodyMedium?.copyWith(
                               color: AppColors.textPrimary,
                             ),
                             decoration: _inputStyle(
                               'Password',
                               Icons.lock_outline,
+                              theme,
                             ),
                           ),
                           const SizedBox(height: AppSpacing.sm),
@@ -159,12 +164,12 @@ class _LoginScreenState extends State<LoginScreen>
                             alignment: Alignment.centerRight,
                             child: GestureDetector(
                               onTap: () {},
-                              child: const Text(
+                              child: Text(
                                 'Forgot Password?',
-                                style: TextStyle(
+                                style: theme.textTheme.bodyMedium?.copyWith(
                                   color: AppColors.textSecondary,
-                                  fontSize: 13,
                                   fontWeight: FontWeight.w500,
+                                  fontSize: 13,
                                 ),
                               ),
                             ),
@@ -188,11 +193,10 @@ class _LoginScreenState extends State<LoginScreen>
                                 ),
                                 elevation: 0,
                               ),
-                              child: const Text(
+                              child: Text(
                                 'Login',
-                                style: TextStyle(
+                                style: theme.textTheme.labelLarge?.copyWith(
                                   fontSize: 15,
-                                  fontWeight: FontWeight.w600,
                                   color: Colors.white,
                                 ),
                               ),
@@ -205,10 +209,12 @@ class _LoginScreenState extends State<LoginScreen>
                             child: GestureDetector(
                               onTap: () {},
                               child: RichText(
-                                text: const TextSpan(
-                                  style: TextStyle(fontSize: 13),
+                                text: TextSpan(
+                                  style: theme.textTheme.bodyMedium?.copyWith(
+                                    fontSize: 13,
+                                  ),
                                   children: [
-                                    TextSpan(
+                                    const TextSpan(
                                       text: "Don't have an account? ",
                                       style: TextStyle(
                                         color: AppColors.textSecondary,
@@ -216,7 +222,7 @@ class _LoginScreenState extends State<LoginScreen>
                                     ),
                                     TextSpan(
                                       text: "Signup",
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         color: AppColors.primary,
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -240,7 +246,7 @@ class _LoginScreenState extends State<LoginScreen>
                                 ),
                                 child: Text(
                                   'OR',
-                                  style: TextStyle(
+                                  style: theme.textTheme.bodyMedium?.copyWith(
                                     color: AppColors.textSecondary.withOpacity(
                                       0.6,
                                     ),
