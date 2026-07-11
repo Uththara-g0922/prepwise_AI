@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:prepwise_ai/core/theme/app_colors.dart';
+import 'package:prepwise_ai/core/theme/app_gradient.dart';
 import 'package:prepwise_ai/core/theme/app_radius.dart';
 import 'package:prepwise_ai/features/onboarding/presentation/screens/onboarding_screen.dart';
 
@@ -188,7 +189,11 @@ _entranceController.forward();
   @override
   Widget build(BuildContext context){
     return Scaffold(
-      body: SafeArea(
+      body: Container(
+    decoration: const BoxDecoration(
+      gradient: AppGradients.background,
+    ),
+      child: SafeArea(
         child: Center(
           child:ConstrainedBox(
             constraints: const BoxConstraints(
@@ -328,6 +333,7 @@ _entranceController.forward();
       )
       )
         
+      ),
       ),
     );
   } 
