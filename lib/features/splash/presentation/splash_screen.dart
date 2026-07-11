@@ -11,9 +11,11 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen>
-with SingleTickerProviderStateMixin {
+with TickerProviderStateMixin {
 
-  late final AnimationController _controller;
+  late final AnimationController _entranceController;
+  late final AnimationController _idleController;
+
   late final Animation<double> _titleFadeAnimation;
   late final Animation<double> _subtitleFadeAnimation;
 
@@ -25,13 +27,23 @@ with SingleTickerProviderStateMixin {
   late final Animation<double> _buttonFadeAnimation;
 late final Animation<Offset> _buttonSlideAnimation;
 
+late final Animation<Offset> _robotFloatAnimation;
+late final Animation<double> _robotIdleScaleAnimation;
+
   @override
   void initState()
    {
     super.initState();
 
-    _controller = AnimationController (vsync:this,
-    duration: const Duration(milliseconds: 1200),
+    _entranceController = AnimationController (vsync:this,
+    duration: const Duration(milliseconds: 2200),
+
+    );
+
+    _idleController = AnimationController (
+      vsync:this,
+    duration: const Duration(milliseconds: 2500),
+
     );
 
     _titleFadeAnimation = Tween<double>(
@@ -39,7 +51,7 @@ late final Animation<Offset> _buttonSlideAnimation;
     end: 1.0,
     ).animate(
       CurvedAnimation(
-    parent:_controller,
+    parent:_entranceController,
     curve: const Interval(
     0.0,
     0.35,
@@ -54,7 +66,7 @@ late final Animation<Offset> _buttonSlideAnimation;
     end: 1.0,
     ).animate(
       CurvedAnimation(
-    parent:_controller,
+    parent:_entranceController,
     curve: const Interval(
     0.20,
     0.55,
@@ -69,7 +81,7 @@ late final Animation<Offset> _buttonSlideAnimation;
       end: 1.0,
     ).animate(
       CurvedAnimation(
-    parent:_controller,
+    parent:_entranceController,
     curve: const Interval(
     0.35,
     0.75,
@@ -83,11 +95,11 @@ late final Animation<Offset> _buttonSlideAnimation;
       end: 1.0,
     ).animate(
       CurvedAnimation(
-    parent:_controller,
+    parent:_entranceController,
     curve: const Interval(
     0.35,
     0.75,
-    curve: Curves.easeOutBack,
+    curve: Curves.easeOutCubic,
     ),
     ),
     );
@@ -96,7 +108,7 @@ late final Animation<Offset> _buttonSlideAnimation;
       begin: 0.0,
       end: 1.0,
     ).animate(
-      CurvedAnimation(parent: _controller,
+      CurvedAnimation(parent: _entranceController,
      curve: const Interval(
       0.60,
       0.85,
@@ -109,7 +121,7 @@ late final Animation<Offset> _buttonSlideAnimation;
       begin: 0,
       end: 1,
     ).animate(
-      CurvedAnimation(parent: _controller,
+      CurvedAnimation(parent: _entranceController,
      curve: const Interval(
       0.75, 
       1.0,
@@ -123,7 +135,7 @@ late final Animation<Offset> _buttonSlideAnimation;
       end: Offset.zero,
     ).animate(
       CurvedAnimation(
-        parent: _controller,
+        parent: _entranceController,
         curve: const Interval(
           0.75, 
           1.0,
@@ -132,16 +144,44 @@ late final Animation<Offset> _buttonSlideAnimation;
      ),
      );
 
+     _robotFloatAnimation = Tween<Offset>(
+      begin:  const Offset(0, 0.02),
+      end: const Offset(0, -0.02),
+  ).animate(
+    CurvedAnimation(
+      parent: _idleController, 
+      curve: Curves.easeInOut,
+    ),
+  );
+
+  _robotIdleScaleAnimation = Tween<double>(
+  begin: 1.00,
+  end: 1.02,
+).animate(
+  CurvedAnimation(
+    parent: _idleController,
+    curve: Curves.easeInOut,
+  ),
+);
 
 
+    _entranceController.addStatusListener((status) {
+  if (status == AnimationStatus.completed) {
+    _idleController.repeat(reverse: true);
+  }
+});
 
-    _controller.forward();
+_entranceController.forward();
+
 
   }
 
+  
+
   @override
   void dispose(){
-    _controller.dispose();
+    _entranceController.dispose();
+    _idleController.dispose();
     super.dispose();
 
   }
@@ -188,8 +228,12 @@ late final Animation<Offset> _buttonSlideAnimation;
 
             const SizedBox(height: 40),
 
-        ScaleTransition(
+        SlideTransition(
+          position:_robotFloatAnimation,
+          child:ScaleTransition(
           scale: _robotScaleAnimation,
+          child: ScaleTransition(scale:_robotIdleScaleAnimation,
+          
           child: FadeTransition(
             opacity: _robotFadeAnimation,
             child: Container(
@@ -203,17 +247,20 @@ late final Animation<Offset> _buttonSlideAnimation;
                   ),
                 ],
               ),
+            
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(AppRadius.large),
                 child: Image.asset(
                   'assets/images/robot.jpeg',
-                  width: MediaQuery.of(context).size.width,
+                  width: double.infinity,
                   height: 300,
                   fit: BoxFit.cover,
                 ),
               ),
             ),
           ),
+        ),
+        ),
         ),
         
         const SizedBox(height: 24),
